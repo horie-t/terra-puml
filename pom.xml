@@ -79,6 +79,8 @@
 				<excludes>
 					<exclude>**/.terraform/</exclude>
 					<exclude>**/.terraform.lock.hcl</exclude>
+					<exclude>**/*.tfstate</exclude>
+					<exclude>**/*.tfstate.*</exclude>
 				</excludes>
 			</testResource>
 		</testResources>
