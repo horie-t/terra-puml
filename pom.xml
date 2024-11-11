@@ -73,6 +73,15 @@
 				</executions>
 			</plugin>
 		</plugins>
+		<testResources>
+			<testResource>
+				<directory>src/test/resources</directory>
+				<excludes>
+					<exclude>**/.terraform/</exclude>
+					<exclude>**/.terraform.lock.hcl</exclude>
+				</excludes>
+			</testResource>
+		</testResources>
 	</build>
 
 </project>
