@@ -1,18 +1,15 @@
-package com.t_horie.terra_puml.application.service.query;
+package com.t_horie.terra_puml.application.domain.service.parser;
 
-import com.t_horie.terra_puml.application.domain.service.parser.TerraPumlListener;
 import com.t_horie.terra_puml.application.service.parser.TerraformLexer;
 import com.t_horie.terra_puml.application.service.parser.TerraformParser;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.IOException;
 import java.io.InputStream;
 
-@SpringBootTest
 public class TerraPumlListenerTest {
 
     @Test
