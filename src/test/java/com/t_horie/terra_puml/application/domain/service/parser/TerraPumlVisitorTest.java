@@ -1,6 +1,5 @@
 package com.t_horie.terra_puml.application.domain.service.parser;
 
-import com.t_horie.terra_puml.application.domain.model.AwsPlantUml;
 import com.t_horie.terra_puml.application.service.parser.TerraformLexer;
 import com.t_horie.terra_puml.application.service.parser.TerraformParser;
 import org.antlr.v4.runtime.CharStreams;
@@ -17,7 +16,7 @@ public class TerraPumlVisitorTest {
 
     @Test
     void test_ファイルをパースしてvisitできる() {
-        var path = "/ec2_only/main.tf";
+        var path = "/ec2_only/input/main.tf";
         try (InputStream is = getClass().getResourceAsStream(path)) {
             // arrange
             var lexer = new TerraformLexer(CharStreams.fromStream(is));

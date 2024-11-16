@@ -14,7 +14,7 @@ public class TerraPumlListenerTest {
 
     @Test
     void test_ファイルをパースしてwalkできる() {
-        var path = "/ec2_only/main.tf";
+        var path = "/ec2_only/input/main.tf";
         try (InputStream is = getClass().getResourceAsStream(path)) {
             var lexer = new TerraformLexer(CharStreams.fromStream(is));
             var parser = new TerraformParser(new CommonTokenStream(lexer));

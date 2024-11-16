@@ -1,6 +1,8 @@
 package com.t_horie.terra_puml.application.domain.service;
 
+import com.t_horie.terra_puml.application.domain.model.AwsPlantUml;
 import com.t_horie.terra_puml.application.domain.service.parser.TerraPumlListener;
+import com.t_horie.terra_puml.application.domain.service.parser.TerraPumlVisitor;
 import com.t_horie.terra_puml.application.port.in.GeneratePlantUmlUse;
 import com.t_horie.terra_puml.application.service.parser.TerraformLexer;
 import com.t_horie.terra_puml.application.service.parser.TerraformParser;
@@ -12,6 +14,9 @@ import org.springframework.stereotype.Component;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Component
 public class PlantUmlGenerator implements GeneratePlantUmlUse {
@@ -20,24 +25,49 @@ public class PlantUmlGenerator implements GeneratePlantUmlUse {
         var is = new FileInputStream(path);
         var lexer = new TerraformLexer(CharStreams.fromStream(is));
         var parser = new TerraformParser(new CommonTokenStream(lexer));
-        ParseTreeWalker.DEFAULT.walk(new TerraPumlListener(), parser.file_());
+        parser.setBuildParseTree(true);
+        var tree = parser.file_();
+        var visitor = new TerraPumlVisitor();
+        visitor.visit(tree);
 
         var sb = new StringBuilder();
         appendStart(sb);
-        appendHeader(sb);
-        appendResource(sb);
+        appendHeader(sb, visitor.getAwsPlantUmls().stream()
+                .map(AwsPlantUml::getResourceType)
+                .collect(Collectors.toSet()));
+        appendResource(sb, visitor.getAwsPlantUmls());
         appendEnd(sb);
 
         return sb.toString();
     }
 
-    public void appendHeader(StringBuilder sb) {
+    public void appendHeader(StringBuilder sb, Set<String> resourceTypes) {
         sb.append("!include <awslib/AWSCommon>\n");
-        sb.append("!include <awslib/Compute/EC2>\n");
+
+        for (var resourceType : resourceTypes) {
+            switch (resourceType) {
+                case "aws_instance":
+                    sb.append("!include <awslib/Compute/EC2>\n");
+                    break;
+            }
+        }
     }
 
-    public void appendResource(StringBuilder sb) {
-        sb.append("EC2(web, \"Web Server\", \"PHP and Apache\", \"Frontend server\")\n");
+    public void appendResource(StringBuilder sb, List<AwsPlantUml> awsPlantUmls) {
+        for (var awsPlantUml : awsPlantUmls) {
+            switch (awsPlantUml.getResourceType()) {
+                case "aws_instance":
+                    sb.append("EC2(%s, \"%s\", \"%s\"".formatted(
+                            awsPlantUml.getAlias(),
+                            awsPlantUml.getLabel(),
+                            awsPlantUml.getTechnology()));
+                    if (!awsPlantUml.getDescription().isEmpty()) {
+                        sb.append(", \"%s\"".formatted(awsPlantUml.getDescription()));
+                    }
+                    sb.append(")\n");
+                    break;
+            }
+        }
     }
 
     private void appendStart(StringBuilder sb) {

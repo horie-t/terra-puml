@@ -4,9 +4,9 @@ import lombok.Data;
 
 @Data
 public class AwsPlantUml {
-    private String resourceType;
-    private String alias;
-    private String label;
-    private String technology;
-    private String description;
+    private String resourceType = "";
+    private String alias = "MUST_BE_SET";
+    private String label = "";
+    private String technology = "";
+    private String description = "";
 }
