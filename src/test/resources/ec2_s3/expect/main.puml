@@ -1,0 +1,7 @@
+@startuml
+!include <awslib/AWSCommon>
+!include <awslib/Storage/SimpleStorageService>
+!include <awslib/Compute/EC2>
+EC2(app, "AppServer", "")
+SimpleStorageService(s3, "ContentsBucket", "")
+@enduml

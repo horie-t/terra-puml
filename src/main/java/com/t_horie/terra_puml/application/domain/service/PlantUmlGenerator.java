@@ -45,9 +45,13 @@ public class PlantUmlGenerator implements GeneratePlantUmlUse {
         sb.append("!include <awslib/AWSCommon>\n");
 
         for (var resourceType : resourceTypes) {
+            // see https://github.com/awslabs/aws-icons-for-plantuml/blob/main/AWSSymbols.md for include directive.
             switch (resourceType) {
                 case "aws_instance":
                     sb.append("!include <awslib/Compute/EC2>\n");
+                    break;
+                case "aws_s3_bucket":
+                    sb.append("!include <awslib/Storage/SimpleStorageService>\n");
                     break;
             }
         }
@@ -58,6 +62,16 @@ public class PlantUmlGenerator implements GeneratePlantUmlUse {
             switch (awsPlantUml.getResourceType()) {
                 case "aws_instance":
                     sb.append("EC2(%s, \"%s\", \"%s\"".formatted(
+                            awsPlantUml.getAlias(),
+                            awsPlantUml.getLabel(),
+                            awsPlantUml.getTechnology()));
+                    if (!awsPlantUml.getDescription().isEmpty()) {
+                        sb.append(", \"%s\"".formatted(awsPlantUml.getDescription()));
+                    }
+                    sb.append(")\n");
+                    break;
+                case "aws_s3_bucket":
+                    sb.append("SimpleStorageService(%s, \"%s\", \"%s\"".formatted(
                             awsPlantUml.getAlias(),
                             awsPlantUml.getLabel(),
                             awsPlantUml.getTechnology()));
