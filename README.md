@@ -20,3 +20,15 @@ antlr4 Terraform.g4
 javac Terraform*.java
 grun Terraform file_ -gui <path-to-terraform-file>
 ```
+
+## Build
+
+```bash
+./mvnw clean package
+```
+
+## Run
+
+```bash
+./target/terra-puml-0.0.1-SNAPSHOT.jar --from=<path-to-terraform-file> --to=<path-to-plantuml-file>
+```
