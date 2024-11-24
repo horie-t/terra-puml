@@ -19,6 +19,8 @@ jobs:
 
       - name: Set up merge commit
         run: |
+          git config --global user.email "you@example.com"
+          git config --global user.name "Your Name"
           git fetch origin ${{ github.base_ref }}:refs/remotes/origin/${{ github.base_ref }}
           git checkout -b pr-merge origin/${{ github.base_ref }}
           git merge ${{ github.event.pull_request.head.sha }}
@@ -31,4 +33,4 @@ jobs:
 
       - name: Run Maven tests
         run: |
-          mvn test
+          ./mvnw test
