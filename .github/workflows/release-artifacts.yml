@@ -23,7 +23,7 @@ jobs:
           echo "Building the project and preparing artifacts..."
           mkdir artifacts
           ./mvnw package
-          cp target/terra-puml-*-SNAPSHOT.jar > artifacts/terra-puml
+          cp target/terra-puml-*-SNAPSHOT.jar artifacts/terra-puml
 
       - name: Upload artifact to release
         uses: softprops/action-gh-release@v1
