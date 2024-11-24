@@ -31,4 +31,4 @@ jobs:
 
       - name: Run Maven tests
         run: |
-          mvn test
+          ./mvnw test
