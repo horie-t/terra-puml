@@ -17,6 +17,11 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 0 # 全ての履歴とブランチをフェッチ
 
+      - name: Setup Git
+      - run: |
+          git config --global user.email "you@example.com"
+          git config --global user.name "Your Name"
+
       - name: Set up merge commit
         run: |
           git fetch origin ${{ github.base_ref }}:refs/remotes/origin/${{ github.base_ref }}
