@@ -4,7 +4,7 @@ resource "aws_instance" "app" {
 
   tags = {
     Name = "AppServer"
-    asPlantUML = "app"
+    tf2puml.as = "app"
     technology = "SpringBoot"
   }
 }
@@ -14,6 +14,6 @@ resource "aws_s3_bucket" "contents" {
 
   tags = {
     Name = "ContentsBucket"
-    asPlantUML = "s3"
+    tf2puml.as = "s3"
   }
 }
