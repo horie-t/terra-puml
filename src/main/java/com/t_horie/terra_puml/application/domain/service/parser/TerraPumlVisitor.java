@@ -40,7 +40,7 @@ public class TerraPumlVisitor extends TerraformBaseVisitor<Void> {
             case "Name":
                 currentAwsPlantUml.setLabel(ctx.expression().getText().replaceAll("\"", ""));
                 break;
-            case "asPlantUML":
+            case "tf2puml.as":
                 currentAwsPlantUml.setAlias(ctx.expression().getText().replaceAll("\"", ""));
                 break;
         }

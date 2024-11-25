@@ -21,7 +21,7 @@ resource "aws_vpc" "terrapuml" {
 
   tags = {
     Name = "TerraPUML_VPC"
-    asPlantUML = "vpc"
+    tf2puml.as = "vpc"
   }
 }
 
@@ -30,7 +30,7 @@ resource "aws_internet_gateway" "terrapuml" {
 
   tags = {
     Name = "InternetGateway"
-    asPlantUML = "i_gateway"
+    tf2puml.as = "i_gateway"
   }
 }
 
@@ -44,7 +44,7 @@ resource "aws_subnet" "public_a" {
 
   tags = {
     Name = "PublicSubnetA"
-    asPlantUML = "subnet_pub_a"
+    tf2puml.as = "subnet_pub_a"
   }
 }
 
@@ -57,7 +57,7 @@ resource "aws_subnet" "public_c" {
 
   tags = {
     Name = "PublicSubnetC"
-    asPlantUML = "subnet_pub_c"
+    tf2puml.as = "subnet_pub_c"
   }
 }
 
@@ -77,7 +77,7 @@ resource "aws_nat_gateway" "terrapuml_a" {
 
   tags = {
     Name = "NatGatewayA"
-    asPlantUML = "nat_gateway_a"
+    tf2puml.as = "nat_gateway_a"
   }
 }
 
@@ -89,7 +89,7 @@ resource "aws_nat_gateway" "terrapuml_c" {
 
   tags = {
     Name = "NatGatewayC"
-    asPlantUML = "nat_gateway_c"
+    tf2puml.as = "nat_gateway_c"
   }
 }
 
@@ -123,7 +123,7 @@ resource "aws_subnet" "private_a" {
 
   tags = {
     Name = "PrivateSubnetA"
-    asPlantUML = "subnet_pri_a"
+    tf2puml.as = "subnet_pri_a"
   }
 }
 
@@ -136,7 +136,7 @@ resource "aws_subnet" "private_c" {
 
   tags = {
     Name = "PrivateSubnetC"
-    asPlantUML = "subnet_pri_c"
+    tf2puml.as = "subnet_pri_c"
   }
 }
 
@@ -217,7 +217,7 @@ resource "aws_lb" "frontend" {
 
   tags = {
     Name = "FrontendLoadBalancer"
-    asPlantUML = "alb"
+    tf2puml.as = "alb"
   }
 }
 
@@ -246,7 +246,7 @@ resource "aws_s3_bucket" "alb_log" {
 
   tags = {
     Name = "AccessLogsBucket"
-    asPlantUML = "s3"
+    tf2puml.as = "s3"
   }
 }
 

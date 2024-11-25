@@ -4,6 +4,6 @@ resource "aws_instance" "example" {
 
     tags = {
       Name = "WebServer"
-      asPlantUML = "web"
+      tf2puml.as = "web"
     }
 }
