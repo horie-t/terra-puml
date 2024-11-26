@@ -1,14 +1,12 @@
 package com.t_horie.terra_puml.application.domain.service;
 
 import com.t_horie.terra_puml.application.domain.model.AwsPlantUml;
-import com.t_horie.terra_puml.application.domain.service.parser.TerraPumlListener;
 import com.t_horie.terra_puml.application.domain.service.parser.TerraPumlVisitor;
 import com.t_horie.terra_puml.application.port.in.GeneratePlantUmlUse;
 import com.t_horie.terra_puml.application.service.parser.TerraformLexer;
 import com.t_horie.terra_puml.application.service.parser.TerraformParser;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
-import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
