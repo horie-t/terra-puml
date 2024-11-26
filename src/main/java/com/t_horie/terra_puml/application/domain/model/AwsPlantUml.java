@@ -7,6 +7,6 @@ public class AwsPlantUml {
     private String resourceType = "";
     private String alias = "MUST_BE_SET";
     private String label = "";
-    private String technology = "";
+    private String tf2pumlTechnology = "";
     private String description = "";
 }
