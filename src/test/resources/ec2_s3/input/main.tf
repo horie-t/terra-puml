@@ -5,7 +5,7 @@ resource "aws_instance" "app" {
   tags = {
     Name = "AppServer"
     tf2puml.as = "app"
-    technology = "SpringBoot"
+    tf2puml.technology = "SpringBoot"
   }
 }
 

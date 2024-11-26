@@ -64,7 +64,7 @@ public class PlantUmlGenerator implements GeneratePlantUmlUse {
                     sb.append("EC2(%s, \"%s\", \"%s\"".formatted(
                             awsPlantUml.getAlias(),
                             awsPlantUml.getLabel(),
-                            awsPlantUml.getTechnology()));
+                            awsPlantUml.getTf2pumlTechnology()));
                     if (!awsPlantUml.getDescription().isEmpty()) {
                         sb.append(", \"%s\"".formatted(awsPlantUml.getDescription()));
                     }
@@ -74,7 +74,7 @@ public class PlantUmlGenerator implements GeneratePlantUmlUse {
                     sb.append("SimpleStorageService(%s, \"%s\", \"%s\"".formatted(
                             awsPlantUml.getAlias(),
                             awsPlantUml.getLabel(),
-                            awsPlantUml.getTechnology()));
+                            awsPlantUml.getTf2pumlTechnology()));
                     if (!awsPlantUml.getDescription().isEmpty()) {
                         sb.append(", \"%s\"".formatted(awsPlantUml.getDescription()));
                     }
