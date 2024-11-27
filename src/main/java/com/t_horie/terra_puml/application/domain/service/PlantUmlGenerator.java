@@ -2,7 +2,7 @@ package com.t_horie.terra_puml.application.domain.service;
 
 import com.t_horie.terra_puml.application.domain.model.AwsPlantUml;
 import com.t_horie.terra_puml.application.domain.service.parser.TerraPumlVisitor;
-import com.t_horie.terra_puml.application.port.in.GeneratePlantUmlUse;
+import com.t_horie.terra_puml.application.port.in.GeneratePlantUmlUseCase;
 import com.t_horie.terra_puml.application.service.parser.TerraformLexer;
 import com.t_horie.terra_puml.application.service.parser.TerraformParser;
 import org.antlr.v4.runtime.CharStreams;
@@ -17,7 +17,10 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
-public class PlantUmlGenerator implements GeneratePlantUmlUse {
+public class PlantUmlGenerator implements GeneratePlantUmlUseCase {
+    /**
+     * @inheritDoc
+     */
     @Override
     public String generateFromTerraform(File path) throws IOException {
         var is = new FileInputStream(path);
@@ -48,9 +51,25 @@ public class PlantUmlGenerator implements GeneratePlantUmlUse {
                 case "aws_instance":
                     sb.append("!include <awslib/Compute/EC2>\n");
                     break;
+                case "aws_internet_gateway":
+                    sb.append("!include <awslib/NetworkingContentDelivery/VPCInternetGateway>\n");
+                    break;
+                case "aws_lb":
+                    sb.append("!include <awslib/NetworkingContentDelivery/ElasticLoadBalancing>\n");
+                    break;
+                case "aws_nat_gateway":
+                    sb.append("!include <awslib/NetworkingContentDelivery/VPCNATGateway>\n");
+                    break;
                 case "aws_s3_bucket":
                     sb.append("!include <awslib/Storage/SimpleStorageService>\n");
                     break;
+                case "aws_subnet":
+                    sb.append("!include <awslib/Groups/PublicSubnet>\n");
+                    break;
+                case "aws_vpc":
+                    sb.append("!include <awslib/Groups/VPC>\n");
+                    break;
+
             }
         }
     }
@@ -68,11 +87,59 @@ public class PlantUmlGenerator implements GeneratePlantUmlUse {
                     }
                     sb.append(")\n");
                     break;
+                case "aws_internet_gateway":
+                    sb.append("VPCInternetGateway(%s, \"%s\", \"%s\"".formatted(
+                            awsPlantUml.getAlias(),
+                            awsPlantUml.getLabel(),
+                            awsPlantUml.getTf2pumlTechnology()));
+                    if (!awsPlantUml.getDescription().isEmpty()) {
+                        sb.append(", \"%s\"".formatted(awsPlantUml.getDescription()));
+                    }
+                    sb.append(")\n");
+                    break;
+                case "aws_lb":
+                    sb.append("ElasticLoadBalancing(%s, \"%s\", \"%s\"".formatted(
+                            awsPlantUml.getAlias(),
+                            awsPlantUml.getLabel(),
+                            awsPlantUml.getTf2pumlTechnology()));
+                    if (!awsPlantUml.getDescription().isEmpty()) {
+                        sb.append(", \"%s\"".formatted(awsPlantUml.getDescription()));
+                    }
+                    sb.append(")\n");
+                    break;
+                case "aws_nat_gateway":
+                    sb.append("VPCNATGateway(%s, \"%s\", \"%s\"".formatted(
+                            awsPlantUml.getAlias(),
+                            awsPlantUml.getLabel(),
+                            awsPlantUml.getTf2pumlTechnology()));
+                    if (!awsPlantUml.getDescription().isEmpty()) {
+                        sb.append(", \"%s\"".formatted(awsPlantUml.getDescription()));
+                    }
+                    sb.append(")\n");
+                    break;
                 case "aws_s3_bucket":
                     sb.append("SimpleStorageService(%s, \"%s\", \"%s\"".formatted(
                             awsPlantUml.getAlias(),
                             awsPlantUml.getLabel(),
                             awsPlantUml.getTf2pumlTechnology()));
+                    if (!awsPlantUml.getDescription().isEmpty()) {
+                        sb.append(", \"%s\"".formatted(awsPlantUml.getDescription()));
+                    }
+                    sb.append(")\n");
+                    break;
+                case "aws_subnet":
+                    sb.append("PublicSubnetGroup(%s, \"%s\"".formatted(
+                            awsPlantUml.getAlias(),
+                            awsPlantUml.getLabel()));
+                    if (!awsPlantUml.getDescription().isEmpty()) {
+                        sb.append(", \"%s\"".formatted(awsPlantUml.getDescription()));
+                    }
+                    sb.append(")\n");
+                    break;
+                case "aws_vpc":
+                    sb.append("VPCGroup(%s, \"%s\"".formatted(
+                            awsPlantUml.getAlias(),
+                            awsPlantUml.getLabel()));
                     if (!awsPlantUml.getDescription().isEmpty()) {
                         sb.append(", \"%s\"".formatted(awsPlantUml.getDescription()));
                     }

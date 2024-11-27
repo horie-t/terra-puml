@@ -4,6 +4,8 @@ import com.t_horie.terra_puml.application.domain.model.AwsPlantUml;
 import com.t_horie.terra_puml.application.service.parser.TerraformBaseVisitor;
 import com.t_horie.terra_puml.application.service.parser.TerraformParser;
 import lombok.Getter;
+import org.antlr.v4.runtime.RuleContext;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,14 +22,16 @@ public class TerraPumlVisitor extends TerraformBaseVisitor<Void> {
         visitResourcetype(ctx.resourcetype());
         visitBlockbody(ctx.blockbody());
 
-        awsPlantUmls.add(currentAwsPlantUml);
+        if (! currentAwsPlantUml.getAlias().isEmpty()) {
+            awsPlantUmls.add(currentAwsPlantUml);
+        }
         currentAwsPlantUml = null;
         return null;
     }
 
     @Override
     public Void visitResourcetype(TerraformParser.ResourcetypeContext ctx) {
-        currentAwsPlantUml.setResourceType(ctx.getText().replaceAll("\"", ""));
+        currentAwsPlantUml.setResourceType(getTextNoDoubleQuote(ctx));
         return null;
     }
 
@@ -38,13 +42,40 @@ public class TerraPumlVisitor extends TerraformBaseVisitor<Void> {
                 visitExpression(ctx.expression());
                 break;
             case "Name":
-                currentAwsPlantUml.setLabel(ctx.expression().getText().replaceAll("\"", ""));
+                currentAwsPlantUml.setLabel(getTextNoDoubleQuote(ctx.expression()));
                 break;
             case "tf2puml.as":
-                currentAwsPlantUml.setAlias(ctx.expression().getText().replaceAll("\"", ""));
+                currentAwsPlantUml.setAlias(getTextNoDoubleQuote(ctx.expression()));
                 break;
         }
 
+        return null;
+    }
+
+    private String getTextNoDoubleQuote(RuleContext ctx) {
+        return ctx.getText().replaceAll("\"", "");
+    }
+
+    /*
+     * Ignore Section: below definitions are not used in this project
+     */
+    @Override
+    public Void visitTerraform(TerraformParser.TerraformContext ctx) {
+        return null;
+    }
+
+    @Override
+    public Void visitData(TerraformParser.DataContext ctx) {
+        return null;
+    }
+
+    @Override
+    public Void visitProvider(TerraformParser.ProviderContext ctx) {
+        return null;
+    }
+
+    @Override
+    public Void visitOutput(TerraformParser.OutputContext ctx) {
         return null;
     }
 }
