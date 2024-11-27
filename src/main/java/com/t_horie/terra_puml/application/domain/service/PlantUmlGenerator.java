@@ -7,12 +7,14 @@ import com.t_horie.terra_puml.application.service.parser.TerraformLexer;
 import com.t_horie.terra_puml.application.service.parser.TerraformParser;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
+import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -22,7 +24,7 @@ public class PlantUmlGenerator implements GeneratePlantUmlUseCase {
      * @inheritDoc
      */
     @Override
-    public String generateFromTerraform(File path) throws IOException {
+    public String generateFromTerraform(File path, Optional<File> layoutPath) throws IOException {
         var is = new FileInputStream(path);
         var lexer = new TerraformLexer(CharStreams.fromStream(is));
         var parser = new TerraformParser(new CommonTokenStream(lexer));
@@ -37,6 +39,13 @@ public class PlantUmlGenerator implements GeneratePlantUmlUseCase {
                 .map(AwsPlantUml::getResourceType)
                 .collect(Collectors.toSet()));
         appendResource(sb, visitor.getAwsPlantUmls());
+        layoutPath.ifPresent(file -> {
+            try {
+                sb.append(FileUtils.readFileToString(file, "UTF-8"));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
         appendEnd(sb);
 
         return sb.toString();

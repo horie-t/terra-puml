@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -17,7 +18,7 @@ public class PlantUmlGeneratorTest {
         // arrange
         var inputFile = new File("src/test/resources/ec2_only/input/main.tf");
         // act
-        var actual = sut.generateFromTerraform(inputFile);
+        var actual = sut.generateFromTerraform(inputFile, Optional.empty());
         // assert
         assertEquals(Files.readString(Path.of("src/test/resources/ec2_only/expect/main.puml")), actual);
     }
@@ -27,7 +28,7 @@ public class PlantUmlGeneratorTest {
         // arrange
         var inputFile = new File("src/test/resources/ec2_s3/input/main.tf");
         // act
-        var actual = sut.generateFromTerraform(inputFile);
+        var actual = sut.generateFromTerraform(inputFile, Optional.empty());
         // assert
         assertEquals(Files.readString(Path.of("src/test/resources/ec2_s3/expect/main.puml")), actual);
     }
@@ -37,8 +38,19 @@ public class PlantUmlGeneratorTest {
         // arrange
         var inputFile = new File("src/test/resources/vpc_network/input/main.tf");
         // act
-        var actual = sut.generateFromTerraform(inputFile);
+        var actual = sut.generateFromTerraform(inputFile, Optional.empty());
         // assert
         assertEquals(Files.readString(Path.of("src/test/resources/vpc_network/expect/main.puml")), actual);
+    }
+
+    @Test
+    void test_layoutファイルが指定された場合はファイルの内容が追加される() throws IOException {
+        // arrange
+        var inputFile = new File("src/test/resources/ec2_s3/input/main.tf");
+        var layoutFile = new File("src/test/resources/ec2_s3/input/layout.puml");
+        // act
+        var actual = sut.generateFromTerraform(inputFile, Optional.of(layoutFile));
+        // assert
+        assertEquals(Files.readString(Path.of("src/test/resources/ec2_s3/expect/main_with_layout.puml")), actual);
     }
 }
