@@ -31,4 +31,14 @@ public class PlantUmlGeneratorTest {
         // assert
         assertEquals(Files.readString(Path.of("src/test/resources/ec2_s3/expect/main.puml")), actual);
     }
+
+    @Test
+    void test_asの指定がないリソースは生成されない() throws IOException {
+        // arrange
+        var inputFile = new File("src/test/resources/vpc_network/input/main.tf");
+        // act
+        var actual = sut.generateFromTerraform(inputFile);
+        // assert
+        assertEquals(Files.readString(Path.of("src/test/resources/vpc_network/expect/main.puml")), actual);
+    }
 }

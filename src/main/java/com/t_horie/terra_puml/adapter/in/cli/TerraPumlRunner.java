@@ -1,6 +1,6 @@
 package com.t_horie.terra_puml.adapter.in.cli;
 
-import com.t_horie.terra_puml.application.port.in.GeneratePlantUmlUse;
+import com.t_horie.terra_puml.application.port.in.GeneratePlantUmlUseCase;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
@@ -11,9 +11,9 @@ import java.io.FileWriter;
 
 @Component
 public class TerraPumlRunner implements ApplicationRunner {
-    private final GeneratePlantUmlUse generatePlantUmlUse;
+    private final GeneratePlantUmlUseCase generatePlantUmlUse;
 
-    public TerraPumlRunner(GeneratePlantUmlUse generatePlantUmlUse) {
+    public TerraPumlRunner(GeneratePlantUmlUseCase generatePlantUmlUse) {
         this.generatePlantUmlUse = generatePlantUmlUse;
     }
 
