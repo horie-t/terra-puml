@@ -1,6 +1,6 @@
-package com.t_horie.terra_puml.application.service;
+package com.t_horie.tf2puml.application.service;
 
-import com.t_horie.terra_puml.application.domain.service.PlantUmlGenerator;
+import com.t_horie.tf2puml.application.domain.service.PlantUmlGenerator;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;

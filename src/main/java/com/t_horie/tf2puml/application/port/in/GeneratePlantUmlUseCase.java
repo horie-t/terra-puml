@@ -1,4 +1,4 @@
-package com.t_horie.terra_puml.application.port.in;
+package com.t_horie.tf2puml.application.port.in;
 
 import java.io.File;
 import java.io.IOException;

@@ -1,4 +1,4 @@
-package com.t_horie.terra_puml.application.domain.model;
+package com.t_horie.tf2puml.application.domain.model;
 
 import lombok.Data;
 

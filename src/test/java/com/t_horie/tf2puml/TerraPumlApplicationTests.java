@@ -1,6 +1,6 @@
-package com.t_horie.terra_puml;
+package com.t_horie.tf2puml;
 
-import com.t_horie.terra_puml.adapter.in.cli.TerraPumlRunner;
+import com.t_horie.tf2puml.adapter.in.cli.TerraPumlRunner;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;

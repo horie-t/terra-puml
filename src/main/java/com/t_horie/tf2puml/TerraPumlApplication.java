@@ -1,4 +1,4 @@
-package com.t_horie.terra_puml;
+package com.t_horie.tf2puml;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
