@@ -26,11 +26,12 @@ jobs:
           echo "Building the project and preparing artifacts..."
           mkdir artifacts
           ./mvnw package
-          cp target/terra-puml-*-SNAPSHOT.jar artifacts/terra-puml
+          chmod +x target/tf2puml-*-SNAPSHOT.jar
+          cp target/tf2puml-*-SNAPSHOT.jar artifacts/tf2puml
 
       - name: Upload artifact to release
         uses: softprops/action-gh-release@v1
         with:
-          files: ./artifacts/terra-puml
+          files: ./artifacts/tf2puml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
