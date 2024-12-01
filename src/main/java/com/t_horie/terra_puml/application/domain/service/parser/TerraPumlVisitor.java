@@ -37,7 +37,7 @@ public class TerraPumlVisitor extends TerraformBaseVisitor<Void> {
 
     @Override
     public Void visitArgument(TerraformParser.ArgumentContext ctx) {
-        switch (ctx.identifier().getText()) {
+        switch (getTextNoDoubleQuote(ctx.identifier())) {
             case "tags":
                 visitExpression(ctx.expression());
                 break;

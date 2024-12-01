@@ -4,8 +4,8 @@ resource "aws_instance" "app" {
 
   tags = {
     Name = "AppServer"
-    tf2puml.as = "app"
-    tf2puml.technology = "SpringBoot"
+    "tf2puml.as" = "app"
+    "tf2puml.technology" = "SpringBoot"
   }
 }
 
@@ -14,6 +14,6 @@ resource "aws_s3_bucket" "contents" {
 
   tags = {
     Name = "ContentsBucket"
-    tf2puml.as = "s3"
+    "tf2puml.as" = "s3"
   }
 }
