@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.t-horie</groupId>
-	<artifactId>terra-puml</artifactId>
+	<artifactId>tf2puml</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>TerraPUML</name>
-	<description>PlantUML generator from Terraform.</description>
+	<name>tf2puml</name>
+	<description>PlantUML diagram generator from Terraform file.</description>
 	<url/>
 	<licenses>
 		<license/>

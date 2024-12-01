@@ -1,6 +1,6 @@
-package com.t_horie.terra_puml.adapter.in.cli;
+package com.t_horie.tf2puml.adapter.in.cli;
 
-import com.t_horie.terra_puml.application.port.in.GeneratePlantUmlUseCase;
+import com.t_horie.tf2puml.application.port.in.GeneratePlantUmlUseCase;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
-import java.util.Optional;
 
 @Component
 public class TerraPumlRunner implements ApplicationRunner {

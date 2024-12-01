@@ -1,10 +1,10 @@
-package com.t_horie.terra_puml.application.domain.service;
+package com.t_horie.tf2puml.application.domain.service;
 
-import com.t_horie.terra_puml.application.domain.model.AwsPlantUml;
-import com.t_horie.terra_puml.application.domain.service.parser.TerraPumlVisitor;
-import com.t_horie.terra_puml.application.port.in.GeneratePlantUmlUseCase;
-import com.t_horie.terra_puml.application.service.parser.TerraformLexer;
-import com.t_horie.terra_puml.application.service.parser.TerraformParser;
+import com.t_horie.tf2puml.application.domain.model.AwsPlantUml;
+import com.t_horie.tf2puml.application.domain.service.parser.TerraPumlVisitor;
+import com.t_horie.tf2puml.application.port.in.GeneratePlantUmlUseCase;
+import com.t_horie.tf2puml.application.service.parser.TerraformLexer;
+import com.t_horie.tf2puml.application.service.parser.TerraformParser;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.apache.commons.io.FileUtils;

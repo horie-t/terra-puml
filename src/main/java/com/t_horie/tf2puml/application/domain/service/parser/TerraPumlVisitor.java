@@ -1,11 +1,10 @@
-package com.t_horie.terra_puml.application.domain.service.parser;
+package com.t_horie.tf2puml.application.domain.service.parser;
 
-import com.t_horie.terra_puml.application.domain.model.AwsPlantUml;
-import com.t_horie.terra_puml.application.service.parser.TerraformBaseVisitor;
-import com.t_horie.terra_puml.application.service.parser.TerraformParser;
+import com.t_horie.tf2puml.application.domain.model.AwsPlantUml;
+import com.t_horie.tf2puml.application.service.parser.TerraformBaseVisitor;
+import com.t_horie.tf2puml.application.service.parser.TerraformParser;
 import lombok.Getter;
 import org.antlr.v4.runtime.RuleContext;
-import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
