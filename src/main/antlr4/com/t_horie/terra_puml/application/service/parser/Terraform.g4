@@ -107,6 +107,7 @@ identifierchain
     : (IDENTIFIER | IN | VARIABLE | PROVIDER) index? (DOT identifierchain)*
     | STAR (DOT identifierchain)*
     | inline_index (DOT identifierchain)*
+    | STRING
     ;
 
 inline_index
