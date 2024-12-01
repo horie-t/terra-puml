@@ -64,4 +64,28 @@ public class PlantUmlGeneratorTest {
         // assert
         assertEquals(Files.readString(Path.of("src/test/resources/ec2_s3/expect/main_with_layout.puml")), actual);
     }
+
+    @Test
+    void test_layoutファイルが存在しない場合は例外が発生する() {
+        // arrange
+        var inputFile = new File("src/test/resources/ec2_s3/input/main.tf");
+        var layoutFile = new File("src/test/resources/ec2_s3/input/not_found.puml");
+        // act & assert
+        var exception = org.junit.jupiter.api.Assertions.assertThrows(IOException.class, () -> {
+            sut.generateFromTerraform(inputFile, Optional.of(layoutFile));
+        });
+        assertEquals("File not found: src/test/resources/ec2_s3/input/not_found.puml", exception.getMessage());
+    }
+
+    @Test
+    void test_layoutファイルがディレクトリの場合は例外が発生する() {
+        // arrange
+        var inputFile = new File("src/test/resources/ec2_s3/input/main.tf");
+        var layoutFile = new File("src/test/resources/ec2_s3/input");
+        // act & assert
+        var exception = org.junit.jupiter.api.Assertions.assertThrows(IOException.class, () -> {
+            sut.generateFromTerraform(inputFile, Optional.of(layoutFile));
+        });
+        assertEquals("Not a file: src/test/resources/ec2_s3/input", exception.getMessage());
+    }
 }

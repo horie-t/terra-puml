@@ -25,10 +25,27 @@ public class PlantUmlGenerator implements GeneratePlantUmlUseCase {
      */
     @Override
     public String generateFromTerraform(File path, Optional<File> layoutPath) throws IOException {
+        /*
+         * 引数のチェック
+         */
         if (!path.exists()) {
+            // 指定したファイルが存在しない場合
             throw new IOException("File not found: %s".formatted(path));
         }
 
+        if (layoutPath.isPresent()) {
+            if (!layoutPath.get().exists()) {
+                // 指定したファイルが存在しない場合
+                throw new IOException("File not found: %s".formatted(layoutPath.get()));
+            } else if (!layoutPath.get().isFile()) {
+                // 指定したファイルがディレクトリの場合
+                throw new IOException("Not a file: %s".formatted(layoutPath.get()));
+            }
+        }
+
+        /*
+         * ファイルを読み込み、AWSリソースを取得する
+         */
         var is = new FileInputStream(path);
         var lexer = new TerraformLexer(CharStreams.fromStream(is));
         var parser = new TerraformParser(new CommonTokenStream(lexer));
@@ -37,6 +54,9 @@ public class PlantUmlGenerator implements GeneratePlantUmlUseCase {
         var visitor = new TerraPumlVisitor();
         visitor.visit(tree);
 
+        /*
+         * PlantUMLのテキストを生成する
+         */
         var sb = new StringBuilder();
         appendStart(sb);
         appendHeader(sb, visitor.getAwsPlantUmls().stream()
