@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -60,7 +61,14 @@ public class PlantUmlGenerator implements GeneratePlantUmlUseCase {
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
-                }).collect(Collectors.toList());
+                })
+                .sorted(new Comparator<AwsPlantUml>() {
+                    @Override
+                    public int compare(AwsPlantUml o1, AwsPlantUml o2) {
+                        return o1.getAlias().compareTo(o2.getAlias());
+                    }
+                })
+                .collect(Collectors.toList());
 
         /*
          * PlantUMLのテキストを生成する
