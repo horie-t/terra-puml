@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.util.Optional;
 
 @Component
 public class TerraPumlRunner implements ApplicationRunner {
@@ -26,7 +27,8 @@ public class TerraPumlRunner implements ApplicationRunner {
 
         var fromPath = args.getOptionValues("from").getFirst();
         var toPath = args.getOptionValues("to").getFirst();
-        var layoutPath = args.getOptionValues("layout").stream().findFirst().map(File::new);
+        Optional<File> layoutPath = args.getOptionValues("layout") == null ?
+                Optional.empty() : args.getOptionValues("layout").stream().findFirst().map(File::new);
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(toPath))) {
             writer.write(generatePlantUmlUse.generateFromTerraform(new File(fromPath), layoutPath));
         }
