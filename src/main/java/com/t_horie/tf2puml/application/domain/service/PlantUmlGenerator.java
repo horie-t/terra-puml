@@ -46,30 +46,34 @@ public class PlantUmlGenerator implements GeneratePlantUmlUseCase {
         /*
          * ファイルを読み込み、AWSリソースを取得する
          */
-        var is = new FileInputStream(path);
-        var lexer = new TerraformLexer(CharStreams.fromStream(is));
-        var parser = new TerraformParser(new CommonTokenStream(lexer));
-        parser.setBuildParseTree(true);
-        var tree = parser.file_();
-        var visitor = new TerraPumlVisitor();
-        visitor.visit(tree);
+        var tfFiles = path.isFile() ? List.of(path) : FileUtils.listFiles(path, new String[]{"tf"}, false);
+        List<AwsPlantUml> awsPlantUmls = tfFiles.stream()
+                .flatMap(file -> {
+                    try (FileInputStream is = new FileInputStream(file)) {
+                        var lexer = new TerraformLexer(CharStreams.fromStream(is));
+                        var parser = new TerraformParser(new CommonTokenStream(lexer));
+                        parser.setBuildParseTree(true);
+                        var tree = parser.file_();
+                        var visitor = new TerraPumlVisitor();
+                        visitor.visit(tree);
+                        return visitor.getAwsPlantUmls().stream();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }).collect(Collectors.toList());
 
         /*
          * PlantUMLのテキストを生成する
          */
         var sb = new StringBuilder();
         appendStart(sb);
-        appendHeader(sb, visitor.getAwsPlantUmls().stream()
+        appendHeader(sb, awsPlantUmls.stream()
                 .map(AwsPlantUml::getResourceType)
                 .collect(Collectors.toSet()));
-        appendResource(sb, visitor.getAwsPlantUmls());
-        layoutPath.ifPresent(file -> {
-            try {
-                sb.append(FileUtils.readFileToString(file, "UTF-8"));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
+        appendResource(sb, awsPlantUmls);
+        if (layoutPath.isPresent()) {
+            sb.append(FileUtils.readFileToString(layoutPath.get(), "UTF-8"));
+        }
         appendEnd(sb);
 
         return sb.toString();

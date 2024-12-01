@@ -1,0 +1,19 @@
+@startuml
+!include <awslib/AWSCommon>
+!include <awslib/NetworkingContentDelivery/ElasticLoadBalancing>
+!include <awslib/NetworkingContentDelivery/VPCInternetGateway>
+!include <awslib/Groups/VPC>
+!include <awslib/Groups/PublicSubnet>
+!include <awslib/Storage/SimpleStorageService>
+!include <awslib/NetworkingContentDelivery/VPCNATGateway>
+SimpleStorageService(s3, "AccessLogsBucket", "")
+VPCGroup(vpc, "Tf2puml_VPC")
+VPCInternetGateway(i_gateway, "InternetGateway", "")
+PublicSubnetGroup(subnet_pub_a, "PublicSubnetA")
+PublicSubnetGroup(subnet_pub_c, "PublicSubnetC")
+VPCNATGateway(nat_gateway_a, "NatGatewayA", "")
+VPCNATGateway(nat_gateway_c, "NatGatewayC", "")
+PublicSubnetGroup(subnet_private_a, "PrivateSubnetA")
+PublicSubnetGroup(subnet_private_c, "PrivateSubnetC")
+ElasticLoadBalancing(alb, "FrontendLoadBalancer", "")
+@enduml
