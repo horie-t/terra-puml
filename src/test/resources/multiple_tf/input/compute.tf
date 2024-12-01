@@ -14,7 +14,7 @@ resource "aws_lb" "frontend" {
 
   tags = {
     Name = "FrontendLoadBalancer"
-    "tf2puml.as" = "alb"
+    "tf2puml:as" = "alb"
   }
 }
 

@@ -7,7 +7,7 @@ resource "aws_s3_bucket" "alb_log" {
 
   tags = {
     Name = "AccessLogsBucket"
-    "tf2puml.as" = "s3"
+    "tf2puml:as" = "s3"
   }
 }
 
