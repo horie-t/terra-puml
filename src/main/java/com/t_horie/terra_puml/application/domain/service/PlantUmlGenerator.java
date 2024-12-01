@@ -25,6 +25,10 @@ public class PlantUmlGenerator implements GeneratePlantUmlUseCase {
      */
     @Override
     public String generateFromTerraform(File path, Optional<File> layoutPath) throws IOException {
+        if (!path.exists()) {
+            throw new IOException("File not found: %s".formatted(path));
+        }
+
         var is = new FileInputStream(path);
         var lexer = new TerraformLexer(CharStreams.fromStream(is));
         var parser = new TerraformParser(new CommonTokenStream(lexer));
