@@ -55,6 +55,16 @@ public class PlantUmlGeneratorTest {
     }
 
     @Test
+    void test_ファイルがディレクトリの場合はディレクトリ内のtfファイルをすべてパースしてPlantUMLファイルを生成できる() throws IOException {
+        // arrange
+        var inputDir = new File("src/test/resources/multiple_tf/input");
+        // act
+        var actual = sut.generateFromTerraform(inputDir, Optional.empty());
+        // assert
+        assertEquals(Files.readString(Path.of("src/test/resources/multiple_tf/expect/main.puml")), actual);
+    }
+
+    @Test
     void test_layoutファイルが指定された場合はファイルの内容が追加される() throws IOException {
         // arrange
         var inputFile = new File("src/test/resources/ec2_s3/input/main.tf");
