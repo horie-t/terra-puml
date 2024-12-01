@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class PlantUmlGeneratorTest {
     PlantUmlGenerator sut = new PlantUmlGenerator();
     @Test
-    void test_ファイルをパースしてPlantUMLを生成できる() throws IOException {
+    void test_ファイルをパースして単一のAWSリソースのPlantUMLファイルを生成できる() throws IOException {
         // arrange
         var inputFile = new File("src/test/resources/ec2_only/input/main.tf");
         // act
@@ -24,7 +24,18 @@ public class PlantUmlGeneratorTest {
     }
 
     @Test
-    void test_ファイルをパースしてPlantUMLを生成できる_複数のリソース() throws IOException {
+    void test_ファイルが存在しない場合は例外が発生する() {
+        // arrange
+        var inputFile = new File("src/test/resources/ec2_only/input/not_found.tf");
+        // act & assert
+        var exception = org.junit.jupiter.api.Assertions.assertThrows(IOException.class, () -> {
+            sut.generateFromTerraform(inputFile, Optional.empty());
+        });
+        assertEquals("File not found: src/test/resources/ec2_only/input/not_found.tf", exception.getMessage());
+    }
+
+    @Test
+    void test_ファイルをパースして複数のAWSリソースのPlantUMLファイルを生成できる() throws IOException {
         // arrange
         var inputFile = new File("src/test/resources/ec2_s3/input/main.tf");
         // act
@@ -52,5 +63,29 @@ public class PlantUmlGeneratorTest {
         var actual = sut.generateFromTerraform(inputFile, Optional.of(layoutFile));
         // assert
         assertEquals(Files.readString(Path.of("src/test/resources/ec2_s3/expect/main_with_layout.puml")), actual);
+    }
+
+    @Test
+    void test_layoutファイルが存在しない場合は例外が発生する() {
+        // arrange
+        var inputFile = new File("src/test/resources/ec2_s3/input/main.tf");
+        var layoutFile = new File("src/test/resources/ec2_s3/input/not_found.puml");
+        // act & assert
+        var exception = org.junit.jupiter.api.Assertions.assertThrows(IOException.class, () -> {
+            sut.generateFromTerraform(inputFile, Optional.of(layoutFile));
+        });
+        assertEquals("File not found: src/test/resources/ec2_s3/input/not_found.puml", exception.getMessage());
+    }
+
+    @Test
+    void test_layoutファイルがディレクトリの場合は例外が発生する() {
+        // arrange
+        var inputFile = new File("src/test/resources/ec2_s3/input/main.tf");
+        var layoutFile = new File("src/test/resources/ec2_s3/input");
+        // act & assert
+        var exception = org.junit.jupiter.api.Assertions.assertThrows(IOException.class, () -> {
+            sut.generateFromTerraform(inputFile, Optional.of(layoutFile));
+        });
+        assertEquals("Not a file: src/test/resources/ec2_s3/input", exception.getMessage());
     }
 }
