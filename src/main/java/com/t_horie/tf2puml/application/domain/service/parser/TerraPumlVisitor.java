@@ -46,6 +46,9 @@ public class TerraPumlVisitor extends TerraformBaseVisitor<Void> {
             case "tf2puml:as":
                 currentAwsPlantUml.setAlias(getTextNoDoubleQuote(ctx.expression()));
                 break;
+            case "tf2puml:technology":
+                currentAwsPlantUml.setTf2pumlTechnology(getTextNoDoubleQuote(ctx.expression()));
+                break;
         }
 
         return null;

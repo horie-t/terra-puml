@@ -2,7 +2,7 @@
 !include <awslib/AWSCommon>
 !include <awslib/Storage/SimpleStorageService>
 !include <awslib/Compute/EC2>
-EC2(app, "AppServer", "")
+EC2(app, "AppServer", "SpringBoot")
 SimpleStorageService(s3, "ContentsBucket", "")
 app --> s3 : store blob
 @enduml
