@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.t-horie</groupId>
 	<artifactId>tf2puml</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.1.0-SNAPSHOT</version>
 	<name>tf2puml</name>
 	<description>PlantUML diagram generator from Terraform file.</description>
 	<url/>
