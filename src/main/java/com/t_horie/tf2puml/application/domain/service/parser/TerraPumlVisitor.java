@@ -1,6 +1,6 @@
 package com.t_horie.tf2puml.application.domain.service.parser;
 
-import com.t_horie.tf2puml.application.domain.model.AwsPlantUml;
+import com.t_horie.tf2puml.application.domain.model.AwsTfResource;
 import com.t_horie.tf2puml.application.service.parser.TerraformBaseVisitor;
 import com.t_horie.tf2puml.application.service.parser.TerraformParser;
 import lombok.Getter;
@@ -8,29 +8,30 @@ import org.antlr.v4.runtime.RuleContext;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class TerraPumlVisitor extends TerraformBaseVisitor<Void> {
     @Getter
-    private List<AwsPlantUml> awsPlantUmls = new ArrayList<>();
-    private AwsPlantUml currentAwsPlantUml = null;
+    private List<AwsTfResource> awsTfResources = new ArrayList<>();
+    private AwsTfResource currentAwsTfResource = null;
 
     @Override
     public Void visitResource(TerraformParser.ResourceContext ctx) {
-        currentAwsPlantUml = new AwsPlantUml();
+        currentAwsTfResource = new AwsTfResource();
 
         visitResourcetype(ctx.resourcetype());
         visitBlockbody(ctx.blockbody());
 
-        if (! currentAwsPlantUml.getAlias().isEmpty()) {
-            awsPlantUmls.add(currentAwsPlantUml);
+        if (! currentAwsTfResource.getAlias().isEmpty()) {
+            awsTfResources.add(currentAwsTfResource);
         }
-        currentAwsPlantUml = null;
+        currentAwsTfResource = null;
         return null;
     }
 
     @Override
     public Void visitResourcetype(TerraformParser.ResourcetypeContext ctx) {
-        currentAwsPlantUml.setResourceType(getTextNoDoubleQuote(ctx));
+        currentAwsTfResource.setResourceType(getTextNoDoubleQuote(ctx));
         return null;
     }
 
@@ -41,13 +42,16 @@ public class TerraPumlVisitor extends TerraformBaseVisitor<Void> {
                 visitExpression(ctx.expression());
                 break;
             case "Name":
-                currentAwsPlantUml.setLabel(getTextNoDoubleQuote(ctx.expression()));
+                currentAwsTfResource.setLabel(getTextNoDoubleQuote(ctx.expression()));
                 break;
             case "tf2puml:as":
-                currentAwsPlantUml.setAlias(getTextNoDoubleQuote(ctx.expression()));
+                currentAwsTfResource.setAlias(getTextNoDoubleQuote(ctx.expression()));
                 break;
             case "tf2puml:technology":
-                currentAwsPlantUml.setTf2pumlTechnology(getTextNoDoubleQuote(ctx.expression()));
+                currentAwsTfResource.setTf2pumlTechnology(getTextNoDoubleQuote(ctx.expression()));
+                break;
+            case "tf2puml:parent":
+                currentAwsTfResource.setParent(Optional.of(getTextNoDoubleQuote(ctx.expression())));
                 break;
         }
 

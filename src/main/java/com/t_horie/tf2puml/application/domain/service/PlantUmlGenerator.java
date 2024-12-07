@@ -1,6 +1,6 @@
 package com.t_horie.tf2puml.application.domain.service;
 
-import com.t_horie.tf2puml.application.domain.model.AwsPlantUml;
+import com.t_horie.tf2puml.application.domain.model.AwsTfResource;
 import com.t_horie.tf2puml.application.domain.service.parser.TerraPumlVisitor;
 import com.t_horie.tf2puml.application.port.in.GeneratePlantUmlUseCase;
 import com.t_horie.tf2puml.application.service.parser.TerraformLexer;
@@ -48,7 +48,7 @@ public class PlantUmlGenerator implements GeneratePlantUmlUseCase {
          * ファイルを読み込み、AWSリソースを取得する
          */
         var tfFiles = path.isFile() ? List.of(path) : FileUtils.listFiles(path, new String[]{"tf"}, false);
-        List<AwsPlantUml> awsPlantUmls = tfFiles.stream()
+        List<AwsTfResource> awsTfResources = tfFiles.stream()
                 .flatMap(file -> {
                     try (FileInputStream is = new FileInputStream(file)) {
                         var lexer = new TerraformLexer(CharStreams.fromStream(is));
@@ -57,14 +57,14 @@ public class PlantUmlGenerator implements GeneratePlantUmlUseCase {
                         var tree = parser.file_();
                         var visitor = new TerraPumlVisitor();
                         visitor.visit(tree);
-                        return visitor.getAwsPlantUmls().stream();
+                        return visitor.getAwsTfResources().stream();
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
                 })
-                .sorted(new Comparator<AwsPlantUml>() {
+                .sorted(new Comparator<AwsTfResource>() {
                     @Override
-                    public int compare(AwsPlantUml o1, AwsPlantUml o2) {
+                    public int compare(AwsTfResource o1, AwsTfResource o2) {
                         return o1.getAlias().compareTo(o2.getAlias());
                     }
                 })
@@ -75,10 +75,10 @@ public class PlantUmlGenerator implements GeneratePlantUmlUseCase {
          */
         var sb = new StringBuilder();
         appendStart(sb);
-        appendHeader(sb, awsPlantUmls.stream()
-                .map(AwsPlantUml::getResourceType)
+        appendHeader(sb, awsTfResources.stream()
+                .map(AwsTfResource::getResourceType)
                 .collect(Collectors.toSet()));
-        appendResource(sb, awsPlantUmls);
+        appendResource(sb, awsTfResources);
         if (layoutPath.isPresent()) {
             sb.append(FileUtils.readFileToString(layoutPath.get(), "UTF-8"));
         }
@@ -119,8 +119,8 @@ public class PlantUmlGenerator implements GeneratePlantUmlUseCase {
         }
     }
 
-    public void appendResource(StringBuilder sb, List<AwsPlantUml> awsPlantUmls) {
-        for (var awsPlantUml : awsPlantUmls) {
+    public void appendResource(StringBuilder sb, List<AwsTfResource> awsTfResources) {
+        for (var awsPlantUml : awsTfResources) {
             switch (awsPlantUml.getResourceType()) {
                 case "aws_instance":
                     sb.append("EC2(%s, \"%s\", \"%s\"".formatted(
