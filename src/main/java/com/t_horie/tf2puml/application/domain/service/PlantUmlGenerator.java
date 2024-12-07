@@ -100,38 +100,6 @@ public class PlantUmlGenerator implements GeneratePlantUmlUseCase {
         }
     }
 
-    public void appendHeader(StringBuilder sb, Set<String> resourceTypes) {
-        sb.append("!include <awslib/AWSCommon>\n");
-
-        for (var resourceType : resourceTypes) {
-            // see https://github.com/awslabs/aws-icons-for-plantuml/blob/main/AWSSymbols.md for include directive.
-            switch (resourceType) {
-                case "aws_instance":
-                    sb.append("!include <awslib/Compute/EC2>\n");
-                    break;
-                case "aws_internet_gateway":
-                    sb.append("!include <awslib/NetworkingContentDelivery/VPCInternetGateway>\n");
-                    break;
-                case "aws_lb":
-                    sb.append("!include <awslib/NetworkingContentDelivery/ElasticLoadBalancing>\n");
-                    break;
-                case "aws_nat_gateway":
-                    sb.append("!include <awslib/NetworkingContentDelivery/VPCNATGateway>\n");
-                    break;
-                case "aws_s3_bucket":
-                    sb.append("!include <awslib/Storage/SimpleStorageService>\n");
-                    break;
-                case "aws_subnet":
-                    sb.append("!include <awslib/Groups/PublicSubnet>\n");
-                    break;
-                case "aws_vpc":
-                    sb.append("!include <awslib/Groups/VPC>\n");
-                    break;
-
-            }
-        }
-    }
-
     public void appendResource(StringBuilder sb, List<AwsTfResource> awsTfResources) {
         for (var awsPlantUml : awsTfResources) {
             switch (awsPlantUml.getResourceType()) {
