@@ -1,9 +1,9 @@
 @startuml
 !include <awslib/AWSCommon>
-!include <awslib/NetworkingContentDelivery/ElasticLoadBalancing>
-!include <awslib/NetworkingContentDelivery/VPCInternetGateway>
 !include <awslib/Groups/PublicSubnet>
 !include <awslib/Groups/VPC>
+!include <awslib/NetworkingContentDelivery/ElasticLoadBalancing>
+!include <awslib/NetworkingContentDelivery/VPCInternetGateway>
 !include <awslib/NetworkingContentDelivery/VPCNATGateway>
 !include <awslib/Storage/SimpleStorageService>
 ElasticLoadBalancing(alb, "FrontendLoadBalancer", "")

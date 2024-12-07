@@ -1,7 +1,7 @@
 @startuml
 !include <awslib/AWSCommon>
-!include <awslib/Storage/SimpleStorageService>
 !include <awslib/Compute/EC2>
+!include <awslib/Storage/SimpleStorageService>
 EC2(app, "AppServer", "SpringBoot")
 SimpleStorageService(s3, "ContentsBucket", "")
 app --> s3 : store blob

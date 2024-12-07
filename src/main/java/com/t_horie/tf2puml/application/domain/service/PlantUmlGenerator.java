@@ -1,5 +1,6 @@
 package com.t_horie.tf2puml.application.domain.service;
 
+import com.t_horie.tf2puml.application.domain.model.AwsPumlResource;
 import com.t_horie.tf2puml.application.domain.model.AwsTfResource;
 import com.t_horie.tf2puml.application.domain.service.parser.TerraPumlVisitor;
 import com.t_horie.tf2puml.application.port.in.GeneratePlantUmlUseCase;
@@ -13,10 +14,7 @@ import org.springframework.stereotype.Component;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
@@ -45,7 +43,7 @@ public class PlantUmlGenerator implements GeneratePlantUmlUseCase {
         }
 
         /*
-         * ファイルを読み込み、AWSリソースを取得する
+         * tfファイルを読み込み、AWSリソースを取得する
          */
         var tfFiles = path.isFile() ? List.of(path) : FileUtils.listFiles(path, new String[]{"tf"}, false);
         List<AwsTfResource> awsTfResources = tfFiles.stream()
@@ -71,13 +69,20 @@ public class PlantUmlGenerator implements GeneratePlantUmlUseCase {
                 .collect(Collectors.toList());
 
         /*
+         * pumlモデルに変換する
+         */
+        List<AwsPumlResource> awsPumlResources = awsTfResources.stream()
+                .map(AwsPumlResource::fromTfResource)
+                .toList();
+
+        /*
          * PlantUMLのテキストを生成する
          */
         var sb = new StringBuilder();
         appendStart(sb);
-        appendHeader(sb, awsTfResources.stream()
-                .map(AwsTfResource::getResourceType)
-                .collect(Collectors.toSet()));
+        appendHeaders(sb, awsPumlResources.stream()
+                .map(AwsPumlResource::getHeaderFile)
+                .collect(Collectors.toCollection(TreeSet::new)));
         appendResource(sb, awsTfResources);
         if (layoutPath.isPresent()) {
             sb.append(FileUtils.readFileToString(layoutPath.get(), "UTF-8"));
@@ -85,6 +90,14 @@ public class PlantUmlGenerator implements GeneratePlantUmlUseCase {
         appendEnd(sb);
 
         return sb.toString();
+    }
+
+    public void appendHeaders(StringBuilder sb, Set<String> headerFiles) {
+        sb.append("!include <awslib/AWSCommon>\n");
+
+        for (var headerFile : headerFiles) {
+            sb.append("!include %s\n".formatted(headerFile));
+        }
     }
 
     public void appendHeader(StringBuilder sb, Set<String> resourceTypes) {
