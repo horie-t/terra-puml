@@ -66,7 +66,7 @@ public class PlantUmlGenerator implements GeneratePlantUmlUseCase {
                         return o1.getAlias().compareTo(o2.getAlias());
                     }
                 })
-                .collect(Collectors.toList());
+                .toList();
 
         /*
          * pumlモデルに変換する
@@ -74,6 +74,7 @@ public class PlantUmlGenerator implements GeneratePlantUmlUseCase {
         List<AwsPumlResource> awsPumlResources = awsTfResources.stream()
                 .map(AwsPumlResource::fromTfResource)
                 .toList();
+        List<AwsPumlResource> graph = generateGraph(awsPumlResources);
 
         /*
          * PlantUMLのテキストを生成する
@@ -83,7 +84,7 @@ public class PlantUmlGenerator implements GeneratePlantUmlUseCase {
         appendHeaders(sb, awsPumlResources.stream()
                 .map(AwsPumlResource::getHeaderFile)
                 .collect(Collectors.toCollection(TreeSet::new)));
-        awsPumlResources.forEach(awsPumlResource -> sb.append(awsPumlResource.getIconString()).append("\n"));
+        appendResources(sb, graph, 0);
         if (layoutPath.isPresent()) {
             sb.append(FileUtils.readFileToString(layoutPath.get(), "UTF-8"));
         }
@@ -100,11 +101,41 @@ public class PlantUmlGenerator implements GeneratePlantUmlUseCase {
         }
     }
 
+    public void appendResources(StringBuilder sb, List<AwsPumlResource> awsPumlResources, int depth) {
+        for (var awsPumlResource : awsPumlResources) {
+            sb.append("  ".repeat(depth)).append(awsPumlResource.getIconString());
+            if (!awsPumlResource.getChildren().isEmpty()) {
+                sb.append(" {\n");
+                appendResources(sb, awsPumlResource.getChildren(), depth + 1);
+                sb.append("  ".repeat(depth)).append("}\n");
+            } else {
+                sb.append("\n");
+            }
+        }
+    }
+
     private void appendStart(StringBuilder sb) {
         sb.append("@startuml\n");
     }
 
     private void appendEnd(StringBuilder sb) {
         sb.append("@enduml\n");
+    }
+
+    private List<AwsPumlResource> generateGraph(List<AwsPumlResource> awsPumlResources) {
+        var awsPumlResourceMap = awsPumlResources.stream()
+                .collect(Collectors.toMap(AwsPumlResource::getAlias, resource -> resource));
+
+        List<AwsPumlResource> rootResources = new ArrayList<>();
+        for (var resource : awsPumlResources) {
+            if (resource.getParent().isEmpty()) {
+                rootResources.add(resource);
+            } else {
+                var parent = awsPumlResourceMap.get(resource.getParent().get());
+                parent.getChildren().add(resource);
+            }
+        }
+
+        return rootResources;
     }
 }

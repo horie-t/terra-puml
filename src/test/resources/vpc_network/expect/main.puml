@@ -6,14 +6,17 @@
 !include <awslib/NetworkingContentDelivery/VPCInternetGateway>
 !include <awslib/NetworkingContentDelivery/VPCNATGateway>
 !include <awslib/Storage/SimpleStorageService>
-ElasticLoadBalancing(alb, "FrontendLoadBalancer", "")
-VPCInternetGateway(i_gateway, "InternetGateway", "")
-VPCNATGateway(nat_gateway_a, "NatGatewayA", "")
-VPCNATGateway(nat_gateway_c, "NatGatewayC", "")
 SimpleStorageService(s3, "AccessLogsBucket", "")
-PublicSubnetGroup(subnet_private_a, "PrivateSubnetA")
-PublicSubnetGroup(subnet_private_c, "PrivateSubnetC")
-PublicSubnetGroup(subnet_pub_a, "PublicSubnetA")
-PublicSubnetGroup(subnet_pub_c, "PublicSubnetC")
-VPCGroup(vpc, "Tf2puml_VPC")
+VPCGroup(vpc, "Tf2puml_VPC") {
+  ElasticLoadBalancing(alb, "FrontendLoadBalancer", "")
+  VPCInternetGateway(i_gateway, "InternetGateway", "")
+  PublicSubnetGroup(subnet_private_a, "PrivateSubnetA")
+  PublicSubnetGroup(subnet_private_c, "PrivateSubnetC")
+  PublicSubnetGroup(subnet_pub_a, "PublicSubnetA") {
+    VPCNATGateway(nat_gateway_a, "NatGatewayA", "")
+  }
+  PublicSubnetGroup(subnet_pub_c, "PublicSubnetC") {
+    VPCNATGateway(nat_gateway_c, "NatGatewayC", "")
+  }
+}
 @enduml
