@@ -29,7 +29,7 @@ public class TerraPumlVisitorTest {
             visitor.visit(tree);
 
             // assert
-            var awsPlantUml = visitor.getAwsPlantUmls().get(0);
+            var awsPlantUml = visitor.getAwsTfResources().get(0);
             assertEquals("aws_instance", awsPlantUml.getResourceType());
             assertEquals("web", awsPlantUml.getAlias());
             assertEquals("WebServer", awsPlantUml.getLabel());
