@@ -83,7 +83,7 @@ public class PlantUmlGenerator implements GeneratePlantUmlUseCase {
         appendHeaders(sb, awsPumlResources.stream()
                 .map(AwsPumlResource::getHeaderFile)
                 .collect(Collectors.toCollection(TreeSet::new)));
-        appendResource(sb, awsTfResources);
+        awsPumlResources.forEach(awsPumlResource -> sb.append(awsPumlResource.getIconString()).append("\n"));
         if (layoutPath.isPresent()) {
             sb.append(FileUtils.readFileToString(layoutPath.get(), "UTF-8"));
         }
@@ -97,81 +97,6 @@ public class PlantUmlGenerator implements GeneratePlantUmlUseCase {
 
         for (var headerFile : headerFiles) {
             sb.append("!include %s\n".formatted(headerFile));
-        }
-    }
-
-    public void appendResource(StringBuilder sb, List<AwsTfResource> awsTfResources) {
-        for (var awsPlantUml : awsTfResources) {
-            switch (awsPlantUml.getResourceType()) {
-                case "aws_instance":
-                    sb.append("EC2(%s, \"%s\", \"%s\"".formatted(
-                            awsPlantUml.getAlias(),
-                            awsPlantUml.getLabel(),
-                            awsPlantUml.getTf2pumlTechnology()));
-                    if (!awsPlantUml.getDescription().isEmpty()) {
-                        sb.append(", \"%s\"".formatted(awsPlantUml.getDescription()));
-                    }
-                    sb.append(")\n");
-                    break;
-                case "aws_internet_gateway":
-                    sb.append("VPCInternetGateway(%s, \"%s\", \"%s\"".formatted(
-                            awsPlantUml.getAlias(),
-                            awsPlantUml.getLabel(),
-                            awsPlantUml.getTf2pumlTechnology()));
-                    if (!awsPlantUml.getDescription().isEmpty()) {
-                        sb.append(", \"%s\"".formatted(awsPlantUml.getDescription()));
-                    }
-                    sb.append(")\n");
-                    break;
-                case "aws_lb":
-                    sb.append("ElasticLoadBalancing(%s, \"%s\", \"%s\"".formatted(
-                            awsPlantUml.getAlias(),
-                            awsPlantUml.getLabel(),
-                            awsPlantUml.getTf2pumlTechnology()));
-                    if (!awsPlantUml.getDescription().isEmpty()) {
-                        sb.append(", \"%s\"".formatted(awsPlantUml.getDescription()));
-                    }
-                    sb.append(")\n");
-                    break;
-                case "aws_nat_gateway":
-                    sb.append("VPCNATGateway(%s, \"%s\", \"%s\"".formatted(
-                            awsPlantUml.getAlias(),
-                            awsPlantUml.getLabel(),
-                            awsPlantUml.getTf2pumlTechnology()));
-                    if (!awsPlantUml.getDescription().isEmpty()) {
-                        sb.append(", \"%s\"".formatted(awsPlantUml.getDescription()));
-                    }
-                    sb.append(")\n");
-                    break;
-                case "aws_s3_bucket":
-                    sb.append("SimpleStorageService(%s, \"%s\", \"%s\"".formatted(
-                            awsPlantUml.getAlias(),
-                            awsPlantUml.getLabel(),
-                            awsPlantUml.getTf2pumlTechnology()));
-                    if (!awsPlantUml.getDescription().isEmpty()) {
-                        sb.append(", \"%s\"".formatted(awsPlantUml.getDescription()));
-                    }
-                    sb.append(")\n");
-                    break;
-                case "aws_subnet":
-                    sb.append("PublicSubnetGroup(%s, \"%s\"".formatted(
-                            awsPlantUml.getAlias(),
-                            awsPlantUml.getLabel()));
-                    if (!awsPlantUml.getDescription().isEmpty()) {
-                        sb.append(", \"%s\"".formatted(awsPlantUml.getDescription()));
-                    }
-                    sb.append(")\n");
-                    break;
-                case "aws_vpc":
-                    sb.append("VPCGroup(%s, \"%s\"".formatted(
-                            awsPlantUml.getAlias(),
-                            awsPlantUml.getLabel()));
-                    if (!awsPlantUml.getDescription().isEmpty()) {
-                        sb.append(", \"%s\"".formatted(awsPlantUml.getDescription()));
-                    }
-                    sb.append(")\n");
-                    break;
-            }
         }
     }
 

@@ -1,11 +1,9 @@
 package com.t_horie.tf2puml.application.domain.model;
 
 import lombok.Data;
+import org.yaml.snakeyaml.util.ArrayUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 import static java.util.Map.entry;
 
@@ -21,6 +19,16 @@ public class AwsPumlResource {
 
     public String getHeaderFile() {
         return pumlMacroToIncludeFileName.get(pumlMacro);
+    }
+
+    public String getIconString() {
+        return "%s(%s, \"%s\"".formatted(pumlMacro, alias, label) +
+                (isGroupType() ? "" : ", \"%s\"".formatted(technology)) +
+                (description.isEmpty() ? "" : ", \"%s\"".formatted(description)) + ")";
+    }
+
+    public boolean isGroupType() {
+        return groupTypes.contains(pumlMacro);
     }
 
     public static AwsPumlResource fromTfResource(AwsTfResource tfResource) {
@@ -55,6 +63,8 @@ public class AwsPumlResource {
             entry("PublicSubnetGroup", "<awslib/Groups/PublicSubnet>"),
             entry("VPCGroup", "<awslib/Groups/VPC>")
     );
+
+    private static final Set<String> groupTypes = new HashSet<>(Arrays.asList("VPCGroup", "PublicSubnetGroup"));
 
     private static String getPumlMacro(String tfResource) {
         return tfResourceTypeToPumlMacro.get(tfResource);
