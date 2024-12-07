@@ -31,6 +31,7 @@ resource "aws_internet_gateway" "tf2puml" {
   tags = {
     Name = "InternetGateway"
     "tf2puml:as" = "i_gateway"
+    "tf2puml:parent" = "vpc"
   }
 }
 
@@ -45,6 +46,7 @@ resource "aws_subnet" "public_a" {
   tags = {
     Name = "PublicSubnetA"
     "tf2puml:as" = "subnet_pub_a"
+    "tf2puml:parent" = "vpc"
   }
 }
 
@@ -58,6 +60,7 @@ resource "aws_subnet" "public_c" {
   tags = {
     Name = "PublicSubnetC"
     "tf2puml:as" = "subnet_pub_c"
+    "tf2puml:parent" = "vpc"
   }
 }
 
@@ -78,6 +81,7 @@ resource "aws_nat_gateway" "tf2puml_a" {
   tags = {
     Name = "NatGatewayA"
     "tf2puml:as" = "nat_gateway_a"
+    "tf2puml:parent" = "subnet_pub_a"
   }
 }
 
@@ -90,6 +94,7 @@ resource "aws_nat_gateway" "tf2puml_c" {
   tags = {
     Name = "NatGatewayC"
     "tf2puml:as" = "nat_gateway_c"
+    "tf2puml:parent" = "subnet_pub_c"
   }
 }
 
@@ -124,6 +129,7 @@ resource "aws_subnet" "private_a" {
   tags = {
     Name = "PrivateSubnetA"
     "tf2puml:as" = "subnet_private_a"
+    "tf2puml:parent" = "vpc"
   }
 }
 
@@ -137,6 +143,7 @@ resource "aws_subnet" "private_c" {
   tags = {
     Name = "PrivateSubnetC"
     "tf2puml:as" = "subnet_private_c"
+    "tf2puml:parent" = "vpc"
   }
 }
 
@@ -218,6 +225,7 @@ resource "aws_lb" "frontend" {
   tags = {
     Name = "FrontendLoadBalancer"
     "tf2puml:as" = "alb"
+    "tf2puml:parent" = "vpc"
   }
 }
 
