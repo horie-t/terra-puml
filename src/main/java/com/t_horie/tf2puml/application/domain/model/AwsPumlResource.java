@@ -44,6 +44,7 @@ public class AwsPumlResource {
 
     // see https://github.com/awslabs/aws-icons-for-plantuml/blob/main/AWSSymbols.md for include directive.
     private static final Map<String, String> tfResourceTypeToPumlMacro = Map.ofEntries(
+            entry("aws_elb", "ElasticLoadBalancingClassicLoadBalancer"),
             entry("aws_instance", "EC2"),
             entry("aws_internet_gateway", "VPCInternetGateway"),
             entry("aws_lb", "ElasticLoadBalancing"),
@@ -58,6 +59,7 @@ public class AwsPumlResource {
             entry("EC2", "<awslib/Compute/EC2>"),
             entry("VPCInternetGateway", "<awslib/NetworkingContentDelivery/VPCInternetGateway>"),
             entry("ElasticLoadBalancing", "<awslib/NetworkingContentDelivery/ElasticLoadBalancing>"),
+            entry("ElasticLoadBalancingClassicLoadBalancer", "<awslib/NetworkingContentDelivery/ElasticLoadBalancingClassicLoadBalancer>"),
             entry("VPCNATGateway", "<awslib/NetworkingContentDelivery/VPCNATGateway>"),
             entry("SimpleStorageService", "<awslib/Storage/SimpleStorageService>"),
             entry("PublicSubnetGroup", "<awslib/Groups/PublicSubnet>"),
