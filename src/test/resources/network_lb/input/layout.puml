@@ -1,0 +1,5 @@
+i_gateway --[hidden]-- subnet_pub_a
+i_gateway --down--> nlb
+subnet_pub_a -[hidden] nlb
+nlb -down--> ec2
+subnet_pub_a -[hidden]- subnet_pri_a
