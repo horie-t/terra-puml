@@ -86,6 +86,18 @@ public class PlantUmlGeneratorTest {
     }
 
     @Test
+    void test_CLBのリソースが生成される() throws IOException {
+        // arrange
+        var inputFile = new File(BASE_PATH + "classic_lb/input/main.tf");
+        var layoutFile = new File(BASE_PATH + "classic_lb/input/layout.puml");
+        // act
+        var actual = sut.generateFromTerraform(inputFile, Optional.of(layoutFile));
+        writeToFile("classic_lb/actual/main.puml", actual);
+        // assert
+        assertEquals(Files.readString(Path.of(BASE_PATH + "classic_lb/expect/main.puml")), actual);
+    }
+
+    @Test
     void test_layoutファイルが存在しない場合は例外が発生する() {
         // arrange
         var inputFile = new File(BASE_PATH + "ec2_s3/input/main.tf");

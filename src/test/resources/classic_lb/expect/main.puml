@@ -1,0 +1,24 @@
+@startuml
+!include <awslib/AWSCommon>
+!include <awslib/Compute/EC2>
+!include <awslib/Groups/PublicSubnet>
+!include <awslib/Groups/VPC>
+!include <awslib/NetworkingContentDelivery/ElasticLoadBalancingClassicLoadBalancer>
+!include <awslib/NetworkingContentDelivery/VPCInternetGateway>
+!include <awslib/NetworkingContentDelivery/VPCNATGateway>
+VPCGroup(vpc, "example-vpc") {
+  ElasticLoadBalancingClassicLoadBalancer(elb, "example-elb", "")
+  VPCInternetGateway(i_gateway, "example-igw", "")
+  PublicSubnetGroup(subnet_pri_a, "private-subnet") {
+    EC2(ec2, "private-instance", "")
+  }
+  PublicSubnetGroup(subnet_pub_a, "public-subnet") {
+    VPCNATGateway(nat_gateway_a, "example-nat", "")
+  }
+}
+i_gateway --[hidden]-- subnet_pub_a
+i_gateway --down--> elb
+subnet_pub_a -[hidden] elb
+elb -down--> ec2
+subnet_pub_a -[hidden]- subnet_pri_a
+@enduml
